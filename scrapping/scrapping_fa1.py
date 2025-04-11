@@ -5,50 +5,60 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
 import time
+from datetime import datetime, timedelta
 
-# Setup Chrome options
+# Setup
 options = Options()
-#options.add_argument("--headless")  # Run without opening browser
-options.add_argument("--disable-gpu")
-options.add_argument("--window-size=1920,1080")
+# options.add_argument("--headless")  # Optional: use it when running in background
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
-# Create Service and WebDriver properly
-service = Service(ChromeDriverManager().install())
-driver = webdriver.Chrome(service=service, options=options)
+# Open the page
+driver.get("https://www.flightaware.com/live/findflight?origin=VIDP&destination=VOBL")
+time.sleep(5)
 
-# Open FlightAware page
-url = "https://www.flightaware.com/live/findflight?origin=VIDP&destination=VOBL"
-driver.get(url)
+# Weekday mapping and reference date (Today is Friday, April 11, 2025)
+weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+reference_date = datetime(2025, 4, 11)  # Known date for 'Fri'
 
-time.sleep(5)  # Wait for page to load
+# Function to extract and infer date from field like "Fri 11:30AM IST"
+def infer_date(text):
+    if text:
+        for wd in weekdays:
+            if wd in text:
+                target_wd = weekdays.index(wd)
+                ref_wd = reference_date.weekday()
+                delta = (ref_wd - target_wd) % 7
+                return (reference_date - timedelta(days=delta)).strftime('%Y-%m-%d')
+    return ""
 
-# Collect flight data
-flight_data = []
-#print(driver.page_source[:1000])  # Print first 1000 characters of page source
+# Find all table rows
+rows = driver.find_elements(By.XPATH, '//*[@id="Results"]/tbody/tr')
 
-flights = driver.find_elements(By.CSS_SELECTOR, "div.flightPageResults > div")
-flight_number = driver.find_element(By.XPATH, '//*[@id="Results"]/tbody/tr[75]/td[2]/span/a').text
-print(flight_number)  # Outputs: AI514
-for flight in flights:
-    try:
-        
+# Store data
+all_flight_data = []
 
-        route = flight.find_element(By.CSS_SELECTOR, "div.flightPageResultsAirports").text
-        dep_arr_time = flight.find_element(By.CSS_SELECTOR, "div.flightPageResultsTimes").text
+for row in rows:
+    columns = row.find_elements(By.TAG_NAME, "td")
+    if len(columns) >= 7:
+        departure = columns[4].text.strip()
+        arrival = columns[6].text.strip()
 
-        flight_data.append({
-            "Flight Number": flight_number,
-            "Route": route,
-            "Departure & Arrival": dep_arr_time
-        })
-
-    except Exception:
-        continue
-
-driver.quit()
+        flight = {
+            "Airline": columns[0].text.strip(),
+            "Flight Number": columns[1].text.strip(),
+            "Aircraft": columns[2].text.strip(),
+            "Status": columns[3].text.strip(),
+            "Departure": departure,
+            "Departure Date": infer_date(departure),
+            "Gate/Terminal": columns[5].text.strip(),
+            "Arrival": arrival,
+            "Arrival Date": infer_date(arrival)
+        }
+        all_flight_data.append(flight)
 
 # Save to CSV
-df = pd.DataFrame(flight_data)
+df = pd.DataFrame(all_flight_data)
 df.to_csv("flight_data.csv", index=False)
+print("✅ Saved with both Departure and Arrival Dates in 'flight_data.csv'")
 
-print("✅ Data saved to 'flight_data.csv'")
+driver.quit()
