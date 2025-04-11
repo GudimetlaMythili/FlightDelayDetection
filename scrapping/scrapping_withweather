@@ -1,0 +1,62 @@
+import pandas as pd
+import requests
+from datetime import datetime
+
+# Load flight data
+df = pd.read_csv("all_flight_data.csv")
+
+# Insert your OpenWeather API key here
+API_KEY = "761bae26b4e6f6a6520e06ea7f1b78cc"
+
+# You can change these city names or use coordinates for more precision
+CITY_MAP = {
+    "VIDP": "Delhi",
+    "VOBL": "Bengaluru"
+}
+
+# Function to fetch historical weather data from OpenWeather (One Call API with historical endpoint)
+def get_weather(city, date_str):
+    try:
+        date_obj = datetime.strptime(date_str, "%Y-%m-%d")
+        timestamp = int(date_obj.replace(hour=12, minute=0).timestamp())
+
+        url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
+        response = requests.get(url)
+        data = response.json()
+
+        if response.status_code == 200 and "main" in data:
+            return {
+                "temp": data["main"]["temp"],
+                "humidity": data["main"]["humidity"],
+                "weather": data["weather"][0]["main"]
+            }
+    except Exception as e:
+        print(f"Error fetching weather for {city} on {date_str}: {e}")
+    return {"temp": None, "humidity": None, "weather": None}
+
+# Add weather columns
+departure_weather = []
+arrival_weather = []
+
+for _, row in df.iterrows():
+    dep_date = row["Departure Date"]
+    arr_date = row["Arrival Date"]
+
+    dep_weather = get_weather(CITY_MAP["VIDP"], dep_date)
+    arr_weather = get_weather(CITY_MAP["VOBL"], arr_date)
+
+    departure_weather.append(dep_weather)
+    arrival_weather.append(arr_weather)
+
+# Merge weather data into DataFrame
+df["Dep_Temp"] = [w["temp"] for w in departure_weather]
+df["Dep_Humidity"] = [w["humidity"] for w in departure_weather]
+df["Dep_Condition"] = [w["weather"] for w in departure_weather]
+
+df["Arr_Temp"] = [w["temp"] for w in arrival_weather]
+df["Arr_Humidity"] = [w["humidity"] for w in arrival_weather]
+df["Arr_Condition"] = [w["weather"] for w in arrival_weather]
+
+# Save merged dataset
+df.to_csv("flight_data_with_weather.csv", index=False)
+print("✅ Weather data added and saved as 'flight_data_with_weather.csv'")
