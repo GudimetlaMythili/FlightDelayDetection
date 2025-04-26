@@ -1,0 +1,51 @@
+Airline,Aircraft,Dep_Temp,Dep_Humidity,Dep_Condition,Arr_Temp,Arr_Humidity,Arr_Condition
+Air India,A20N,31.64,42,Clouds,24.09,53,Clear
+Air India,B38M,25.25,45,Rain,25.67,86,Haze
+Akasa Air,A321,33.32,44,Rain,28.72,30,Haze
+SpiceJet,A20N,38.66,74,Haze,28.41,92,Clear
+Vistara,A320,31.15,34,Clear,21.98,54,Haze
+Akasa Air,A320,34.71,71,Clear,20.24,47,Clouds
+Akasa Air,A321,34.39,32,Clouds,27.94,85,Clear
+IndiGO,B38M,34.31,25,Rain,29.56,50,Clouds
+Vistara,B38M,35.03,37,Rain,25.97,83,Rain
+Akasa Air,A20N,32.23,37,Rain,34.23,38,Haze
+IndiGO,B738,39.06,59,Clear,26.56,62,Rain
+IndiGO,A320,29.42,35,Clouds,20.42,58,Clouds
+IndiGO,A320,27.8,85,Haze,34.73,68,Rain
+Air India,A320,38.37,56,Clouds,32.45,86,Clear
+Vistara,B38M,36.02,29,Clear,27.67,45,Clear
+SpiceJet,A321,30.29,79,Clouds,24.13,70,Rain
+IndiGO,A20N,28.16,65,Rain,22.55,76,Clear
+Air India,A321,28.73,24,Haze,28.45,49,Clouds
+Air India,A320,33.28,43,Clouds,32.63,85,Clouds
+Vistara,B738,31.2,65,Rain,22.37,47,Clear
+IndiGO,A20N,38.18,44,Rain,21.0,37,Clouds
+Air India,B38M,35.61,85,Haze,26.35,34,Haze
+Vistara,A321,28.31,35,Haze,21.44,42,Clouds
+IndiGO,A321,26.25,90,Haze,23.83,41,Clouds
+Vistara,B38M,29.46,67,Rain,21.94,87,Clear
+Akasa Air,A20N,39.19,57,Clouds,28.46,78,Rain
+Akasa Air,A320,25.67,59,Clear,27.08,35,Rain
+Air India,A20N,31.34,32,Clear,23.64,95,Haze
+Akasa Air,B38M,39.4,20,Clear,34.83,59,Rain
+SpiceJet,A321,39.54,33,Rain,28.34,42,Clouds
+Akasa Air,A20N,30.06,64,Rain,31.9,42,Clear
+Vistara,B38M,25.11,24,Rain,31.61,54,Clear
+SpiceJet,B738,36.3,51,Clouds,20.42,66,Clouds
+IndiGO,A20N,38.29,25,Rain,29.86,41,Rain
+IndiGO,B738,28.63,64,Haze,27.16,65,Clear
+Air India,A320,35.55,48,Clouds,31.56,71,Rain
+Akasa Air,B38M,35.51,45,Haze,26.66,76,Haze
+Vistara,A20N,36.65,24,Rain,27.86,62,Rain
+Vistara,B38M,31.57,77,Haze,22.64,75,Clear
+SpiceJet,B738,27.83,58,Haze,32.36,77,Rain
+Vistara,B38M,28.18,59,Clouds,20.86,50,Rain
+SpiceJet,A20N,34.81,51,Rain,23.8,67,Clear
+SpiceJet,A320,27.55,25,Rain,29.83,66,Clear
+SpiceJet,A20N,32.72,37,Clear,21.29,39,Rain
+SpiceJet,A20N,35.4,71,Clear,29.43,41,Haze
+IndiGO,B738,39.78,64,Clear,33.55,71,Rain
+Akasa Air,A321,34.92,26,Rain,31.32,33,Clear
+Akasa Air,A321,25.98,75,Clear,26.25,34,Haze
+Air India,A320,38.32,31,Clear,32.0,31,Haze
+Vistara,A320,40.0,60,Haze,30.04,52,Haze
